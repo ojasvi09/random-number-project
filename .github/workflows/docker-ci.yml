@@ -1,0 +1,35 @@
+
+name: Build Docker Images
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build Microservices
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Microservice A
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./microservice-a/Dockerfile
+          push: false
+          tags: microservice-a:latest
+
+      - name: Build Microservice B
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./microservice-b/Dockerfile
+          push: false
+          tags: microservice-b:latest
